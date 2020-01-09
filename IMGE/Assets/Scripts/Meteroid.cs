@@ -6,14 +6,12 @@ public class Meteroid : MonoBehaviour
 {
     private Vector3 direction;
 
-    private Vector3 startingPoint;
 
     public float speed;
     
     // Start is called before the first frame update
     void Start()
     {
-        this.transform.position = startingPoint;
         direction.Normalize();
     }
 
@@ -21,12 +19,20 @@ public class Meteroid : MonoBehaviour
     void Update()
     {
         transform.Translate(direction * speed * Time.deltaTime);
+        StartCoroutine(Ded());
     }
 
-    public void Config(float speed, Vector3 start, Vector3 direction)
+    public void Config(float speed, Vector3 direction, float size)
     {
+        gameObject.transform.localScale *= size;
         this.speed = speed;
-        this.startingPoint = start;
         this.direction = direction;
+    }
+
+    IEnumerator Ded()
+    {
+        yield return new WaitForSeconds(20/ speed);
+        Destroy(gameObject);
+        
     }
 }
